@@ -35,7 +35,16 @@ class SlickTagDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   override def insert(productTag: ProductTag): Future[ProductTag] =
     db.run(tags += productTag).map(_ => productTag)
 
-  override def findByName(name: String): OptionT[Future, ProductTag] = ???
+  override def findByName(name: String): OptionT[Future, ProductTag] =
+    OptionT {
+      db.run {
+        tags
+          .filter(_.name === name)
+          .sortBy(_.createdAt.desc)
+          .result
+          .headOption
+      }
+    }
 }
 
 object SlickTagDao
