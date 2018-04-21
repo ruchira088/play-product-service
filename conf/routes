@@ -1,1 +1,3 @@
-GET     /info                       controllers.HomeController.info
+GET     /info                       web.controllers.HomeController.info
+
+POST    /tags                       web.controllers.TagController.create

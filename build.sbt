@@ -1,3 +1,5 @@
+import Dependencies._
+
 name := """play-product-service"""
 organization := "com.ruchij"
 
@@ -10,5 +12,10 @@ buildInfoPackage := "com.eed3si9n.ruchij"
 
 scalaVersion := "2.12.5"
 
-libraryDependencies += guice
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
+libraryDependencies ++= Seq(
+  guice,
+  playSlick, playSlickEvolutions, postgresql,
+  scalaz,
+
+  scalaTestPlusPlay % Test
+)

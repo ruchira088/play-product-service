@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+
+  product-service:
+    build: .
+    ports:
+      - 9000:9000
+    depends_on:
+      - postgres-database
+    volumes:
+      - "~/.sbt:/root/.sbt"
+      - "~/.ivy2:/root/.ivy2"
+      - ".:/opt/product-service"
+      - "/opt/product-service/target"
+      - "/opt/product-service/project/target"
+      - "/root/.sbt/1.0/plugins"
+    environment:
+      POSTGRES_USER: "product_service"
+      POSTGRES_PASSWORD: "my-secret-password"
+      POSTGRES_URL: "jdbc:postgresql://postgres-database:5432/product_service"
+
+  postgres-database:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: "product_service"
+      POSTGRES_PASSWORD: "my-secret-password"
+      POSTGRES_DB: "product_service"
