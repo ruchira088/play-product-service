@@ -15,7 +15,7 @@ scalaVersion := "2.12.5"
 javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
 
 libraryDependencies ++= Seq(
-  guice,
+  guice, evolutions,
   playSlick, playSlickEvolutions, postgresql,
   scalaz,
 
