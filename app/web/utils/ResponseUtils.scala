@@ -10,14 +10,11 @@ import scala.concurrent.{ExecutionContext, Future}
 
 object ResponseUtils
 {
-  case class ErrorResponse(exception: Exception)
+  private case class ErrorResponse(exception: Exception)
 
-  object ErrorResponse
+  private implicit def errorWrite: Writes[ErrorResponse] =
   {
-    implicit def errorWrite: Writes[ErrorResponse] =
-    {
-      case ErrorResponse(exception) => Json.obj("errorMessage" -> exception.getMessage)
-    }
+    case ErrorResponse(exception) => Json.obj("errorMessage" -> exception.getMessage)
   }
 
   private def jsonErrorResponse(exception: Exception): JsValue = toJson(ErrorResponse(exception))
@@ -26,7 +23,7 @@ object ResponseUtils
     block.recover {
       case ex: DuplicateTagException => Conflict(jsonErrorResponse(ex))
       case ex: EmptyResultException => NotFound(jsonErrorResponse(ex))
-      case _ => InternalServerError(new Exception("Something was wrong with the server."))
+      case _ => InternalServerError(jsonErrorResponse(new Exception("Something was wrong with the server.")))
     }
 
 }
