@@ -8,6 +8,8 @@ object Dependencies
 
   lazy val postgresql = "org.postgresql" % "postgresql" % "42.2.2"
 
+  lazy val h2Database = "com.h2database" % "h2" % "1.4.197"
+
   lazy val scalaz = "org.scalaz" %% "scalaz-core" % "7.2.21"
 
   lazy val scalaTestPlusPlay = "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2"

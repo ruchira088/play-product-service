@@ -13,7 +13,7 @@ case class CreateTagRequest(
 
 object CreateTagRequest
 {
-  implicit def createTagRequest: OFormat[CreateTagRequest] = Json.format[CreateTagRequest]
+  implicit def oFormat: OFormat[CreateTagRequest] = Json.format[CreateTagRequest]
 
   def toProductTag(createTagRequest: CreateTagRequest): ProductTag =
     ProductTag(

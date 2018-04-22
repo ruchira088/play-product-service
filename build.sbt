@@ -12,10 +12,13 @@ buildInfoPackage := "com.eed3si9n.ruchij"
 
 scalaVersion := "2.12.5"
 
+javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
+
 libraryDependencies ++= Seq(
   guice,
   playSlick, playSlickEvolutions, postgresql,
   scalaz,
 
-  scalaTestPlusPlay % Test
+  scalaTestPlusPlay % Test,
+  h2Database % Test
 )
