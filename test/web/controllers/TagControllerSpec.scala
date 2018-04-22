@@ -1,5 +1,6 @@
 package web.controllers
 
+import exceptions.EmptyRouteResultException.emptyRouteResult
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.libs.json.Json
@@ -16,9 +17,11 @@ class TagControllerSpec extends PlaySpec with GuiceOneAppPerTest
 
         val request = FakeRequest(POST, "/tags").withBody(Json.obj("name" -> "apple"))
 
-        val response = route(app, request).get
+        val response = route(app, request).getOrElse(emptyRouteResult())
 
         println(contentAsString(response))
+
+        println(contentAsString(route(app, FakeRequest(GET, "/tags/apple")).get))
       }
     }
   }

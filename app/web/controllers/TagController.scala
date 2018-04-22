@@ -1,45 +1,41 @@
 package web.controllers
 
-import daos.TagDao
-import exceptions.EmptyResultException
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json.toJson
 import play.api.mvc._
+import services.TagService
 import web.requests.CreateTagRequest
-import web.requests.CreateTagRequest.toProductTag
-import web.utils.RequestUtils.extract
 import web.utils.JsonUtils._
+import web.utils.RequestUtils.extractF
+import web.utils.ResponseUtils.handleExceptions
 
-import scala.concurrent.{ExecutionContext, Future}
-import scala.concurrent.Future.fromTry
-import scalaz.std.scalaFuture.futureInstance
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class TagController @Inject()(
        controllerComponents: ControllerComponents,
        parser: PlayBodyParsers,
-       tagDao: TagDao)(implicit executionContext: ExecutionContext)
+       tagService: TagService)(implicit executionContext: ExecutionContext)
   extends AbstractController(controllerComponents)
 {
   def create(): Action[JsValue] = Action.async(parser.json) {
-    implicit jsonRequest =>
+    implicit jsonRequest => handleExceptions {
       for {
-        createTag <- fromTry(extract[CreateTagRequest])
-        productTag <- tagDao.insert(toProductTag(createTag))
+        createTagRequest <- extractF[CreateTagRequest]
+        productTag <- tagService.newTag(createTagRequest)
       }
       yield Ok(toJson(productTag))
+    }
   }
 
   def findByName(name: String): Action[AnyContent] =
     Action.async {
-      for {
-        productTag <-
-          tagDao.findByName(name)
-            .getOrElseF {
-              Future.failed(EmptyResultException(s"""Unable to find a tag named "$name""""))
-            }
+      handleExceptions {
+        for {
+          productTag <- tagService.getByName(name)
+        }
+        yield Ok(toJson(productTag))
       }
-      yield Ok(toJson(productTag))
     }
 }

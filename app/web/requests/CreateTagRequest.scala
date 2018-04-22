@@ -1,9 +1,6 @@
 package web.requests
 
-import models.ProductTag
-import org.joda.time.DateTime
 import play.api.libs.json.{Json, OFormat}
-import utils.GeneralUtils.uuid
 
 case class CreateTagRequest(
       name: String,
@@ -14,9 +11,4 @@ case class CreateTagRequest(
 object CreateTagRequest
 {
   implicit def oFormat: OFormat[CreateTagRequest] = Json.format[CreateTagRequest]
-
-  def toProductTag(createTagRequest: CreateTagRequest): ProductTag =
-    ProductTag(
-      uuid(), DateTime.now(), createTagRequest.name, createTagRequest.label, createTagRequest.description
-    )
 }
