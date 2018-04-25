@@ -12,13 +12,21 @@ buildInfoPackage := "com.eed3si9n.ruchij"
 
 scalaVersion := "2.12.5"
 
-javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
-
 libraryDependencies ++= Seq(
   guice, evolutions,
   playSlick, playSlickEvolutions, postgresql,
   scalaz,
 
   scalaTestPlusPlay % Test,
+  pegdown % Test,
   h2Database % Test
 )
+
+javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
+
+coverageEnabled := true
+
+testOptions in Test +=
+  Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/test-results")
+
+addCommandAlias("testWithCoverage", "; clean; test; coverageReport")

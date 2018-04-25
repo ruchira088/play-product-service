@@ -30,7 +30,7 @@ class TagService @Inject()(tagDao: TagDao)(implicit executionContext: ExecutionC
       productTag <-
         tagDao.findByName(tagName)
           .getOrElseF {
-            Future.failed(EmptyResultException(s"""Unable to find a tag named "$tagName""""))
+            Future.failed(EmptyResultException(s"""Unable to find a tag named "$tagName"."""))
           }
     }
     yield productTag

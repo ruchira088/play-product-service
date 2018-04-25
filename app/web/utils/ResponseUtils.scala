@@ -25,5 +25,4 @@ object ResponseUtils
       case ex: EmptyResultException => NotFound(jsonErrorResponse(ex))
       case _ => InternalServerError(jsonErrorResponse(new Exception("Something was wrong with the server.")))
     }
-
 }

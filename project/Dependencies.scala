@@ -13,4 +13,6 @@ object Dependencies
   lazy val scalaz = "org.scalaz" %% "scalaz-core" % "7.2.21"
 
   lazy val scalaTestPlusPlay = "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2"
+
+  lazy val pegdown = "org.pegdown" % "pegdown" % "1.6.0"
 }
