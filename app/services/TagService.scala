@@ -1,7 +1,8 @@
 package services
 
 import daos.TagDao
-import exceptions.{DuplicateTagException, EmptyResultException}
+import exceptions.{DuplicateItemException, EmptyResultException}
+import exceptions.EmptyResultException._
 import javax.inject.{Inject, Singleton}
 import models.ProductTag
 import org.joda.time.DateTime
@@ -21,7 +22,7 @@ class TagService @Inject()(tagDao: TagDao)(implicit executionContext: ExecutionC
       isEmpty <- tagDao.findByName(createTagRequest.name).isEmpty
 
       productTag <-
-        if (isEmpty) tagDao.insert(toProductTag(createTagRequest)) else Future.failed(DuplicateTagException(createTagRequest.name))
+        if (isEmpty) tagDao.insert(toProductTag(createTagRequest)) else Future.failed(DuplicateItemException[ProductTag](createTagRequest.name))
     }
     yield productTag
 
@@ -30,7 +31,7 @@ class TagService @Inject()(tagDao: TagDao)(implicit executionContext: ExecutionC
       productTag <-
         tagDao.findByName(tagName)
           .getOrElseF {
-            Future.failed(EmptyResultException(s"""Unable to find a tag named "$tagName"."""))
+            Future.failed(noTagsWithName(tagName))
           }
     }
     yield productTag
