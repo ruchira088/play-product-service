@@ -24,4 +24,4 @@ COPY . .
 #
 ENTRYPOINT ["sbt"]
 
-CMD ["~run"]
+CMD ["-jvm-debug", "5005", "~run"]
