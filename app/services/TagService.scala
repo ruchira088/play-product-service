@@ -1,16 +1,16 @@
 package services
 
 import daos.TagDao
-import exceptions.{DuplicateItemException, EmptyResultException}
+import exceptions.DuplicateItemException
 import exceptions.EmptyResultException._
 import javax.inject.{Inject, Singleton}
 import models.ProductTag
 import org.joda.time.DateTime
+import scalaz.std.scalaFuture.futureInstance
 import utils.GeneralUtils.uuid
 import web.requests.CreateTagRequest
 
 import scala.concurrent.{ExecutionContext, Future}
-import scalaz.std.scalaFuture.futureInstance
 
 @Singleton
 class TagService @Inject()(tagDao: TagDao)(implicit executionContext: ExecutionContext)

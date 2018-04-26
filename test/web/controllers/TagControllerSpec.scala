@@ -1,8 +1,8 @@
 package web.controllers
 
-import exceptions.EmptyRouteResultException.emptyRouteResult
-import exceptions.{DuplicateItemException, EmptyResultException}
+import exceptions.DuplicateItemException
 import exceptions.EmptyResultException.noTagsWithName
+import exceptions.EmptyRouteResultException.emptyRouteResult
 import matchers.JsonMatchers._
 import models.ProductTag
 import org.scalatestplus.play.PlaySpec
