@@ -3,10 +3,9 @@ package services
 import daos.ProductDao
 import exceptions.AggregatedException
 import javax.inject.{Inject, Singleton}
-import models.{Product, ProductTag}
+import models.Product
 import org.joda.time.DateTime
-import utils.GeneralUtils.uuid
-import utils.ScalaUtils.flatten
+import utils.ScalaUtils.{flatten, predicate}
 import web.requests.CreateProductRequest
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -29,7 +28,7 @@ class ProductService @Inject()(productDao: ProductDao, tagService: TagService)(i
           }
       }
 
-      _ <- if (tagsLookup.forall(_.isRight)) Future.successful((): Unit) else Future.failed(AggregatedException.fromEitherList(tagsLookup))
+      _ <- predicate(tagsLookup.forall(_.isRight), AggregatedException.fromEitherList(tagsLookup))
 
       product <- productDao.insert(toProduct(createProductRequest))
     }

@@ -13,8 +13,9 @@ buildInfoPackage := "com.eed3si9n.ruchij"
 scalaVersion := "2.12.5"
 
 libraryDependencies ++= Seq(
-  guice, evolutions,
+  guice,
   playSlick, playSlickEvolutions, postgresql,
+  phantomDsl,
   scalaz,
 
   scalaTestPlusPlay % Test,

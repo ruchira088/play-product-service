@@ -12,7 +12,7 @@ import slick.lifted.ProvenShape
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SlickTagDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext)
+class SlickTagDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   extends HasDatabaseConfigProvider[JdbcProfile] with SlickMappedColumns with TagDao
 {
   import SlickTagDao.TABLE_NAME
@@ -34,10 +34,10 @@ class SlickTagDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
 
   val tags = TableQuery[TagTable]
 
-  override def insert(productTag: ProductTag): Future[ProductTag] =
+  override def insert(productTag: ProductTag)(implicit executionContext: ExecutionContext): Future[ProductTag] =
     db.run(tags += productTag).map(_ => productTag)
 
-  override def findByName(name: String): OptionT[Future, ProductTag] =
+  override def findByName(name: String)(implicit executionContext: ExecutionContext): OptionT[Future, ProductTag] =
     OptionT {
       db.run {
         tags
