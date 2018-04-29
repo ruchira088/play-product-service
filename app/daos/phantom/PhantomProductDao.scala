@@ -7,20 +7,20 @@ import com.outworkers.phantom.dsl._
 import daos.ProductDao
 import daos.phantom.tables.PhantomProductTable
 import javax.inject.{Inject, Singleton}
+import models.Product
 import play.api.inject.ApplicationLifecycle
 import scalaz.OptionT
-import models.Product
 import shapeless.HList
-import utils.ConfigUtils.terminate
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
 
 @Singleton
 class PhantomProductDao @Inject()(connection: CassandraConnection, applicationLifecycle: ApplicationLifecycle)
                                  (implicit executionContext: ExecutionContext)
-  extends Database[PhantomProductDao](connection) with ProductDao
+  extends Database[PhantomProductDao](connection) with ProductDao with PhantomDao
 {
+  self =>
+
   object products extends PhantomProductTable with Connector
 
   override def insert(product: Product)(implicit executionContext: ExecutionContext): Future[Product] =
@@ -40,12 +40,9 @@ class PhantomProductDao @Inject()(connection: CassandraConnection, applicationLi
   def find[HL <: HList](query: PhantomProductTable => QueryCondition[HL]): Future[List[Product]] =
     products.select.where(query).fetch()
 
-  def init(): Future[Seq[ResultSet]] = products.create.ifNotExists().future()
+  override def init(): Future[Seq[ResultSet]] = products.create.ifNotExists().future()
 
-  init().onComplete {
+  override def onShutdown(): Unit = shutdown()
 
-    case Success(_) => println(classOf[PhantomProductDao].getSimpleName + " has been successfully initialized.")
-
-    case Failure(throwable) => terminate(throwable)
-  }
+  PhantomDao.initialize(self, applicationLifecycle)
 }
