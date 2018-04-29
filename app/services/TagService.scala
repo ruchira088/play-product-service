@@ -1,7 +1,5 @@
 package services
 
-import java.util.concurrent.Executors
-
 import daos.TagDao
 import exceptions.DuplicateItemException
 import exceptions.EmptyResultException._
@@ -10,6 +8,7 @@ import models.ProductTag
 import org.joda.time.DateTime
 import scalaz.std.scalaFuture.futureInstance
 import utils.GeneralUtils.uuid
+import utils.TypeAliases.TagName
 import web.requests.CreateTagRequest
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -28,7 +27,7 @@ class TagService @Inject()(tagDao: TagDao)
     }
     yield productTag
 
-  def getByName(tagName: String)(implicit executionContext: ExecutionContext): Future[ProductTag] =
+  def getByName(tagName: TagName)(implicit executionContext: ExecutionContext): Future[ProductTag] =
     for {
       productTag <-
         tagDao.findByName(tagName)

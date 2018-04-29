@@ -3,6 +3,7 @@ package daos.phantom.tables
 import com.outworkers.phantom.Table
 import com.outworkers.phantom.keys.{PartitionKey, PrimaryKey}
 import models.Product
+import utils.TypeAliases._
 
 abstract class PhantomProductTable extends Table[PhantomProductTable, Product]
 {
@@ -16,7 +17,7 @@ abstract class PhantomProductTable extends Table[PhantomProductTable, Product]
 
   object description extends OptionalStringColumn
 
-  object tags extends ListColumn[String]
+  object tags extends SetColumn[TagName]
 
-  object imageUrls extends ListColumn[String]
+  object imageUrls extends SetColumn[ImageId]
 }

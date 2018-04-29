@@ -11,6 +11,7 @@ import models.Product
 import play.api.inject.ApplicationLifecycle
 import scalaz.OptionT
 import shapeless.HList
+import utils.TypeAliases.{TagId, TagName}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -36,6 +37,9 @@ class PhantomProductDao @Inject()(connection: CassandraConnection, applicationLi
       }
       yield results.headOption
     }
+
+  override def getByTag(tagName: TagName)(implicit executionContext: ExecutionContext): Future[List[Product]] =
+    find(_.tags contains tagName)
 
   def find[HL <: HList](query: PhantomProductTable => QueryCondition[HL]): Future[List[Product]] =
     products.select.where(query).fetch()

@@ -9,6 +9,6 @@ case class Product(
       name: String,
       label: String,
       description: Option[String],
-      tags: List[TagName],
-      imageUrls: List[ImageId]
+      tags: Set[TagName],
+      imageUrls: Set[ImageId]
 )

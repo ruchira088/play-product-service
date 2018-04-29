@@ -5,7 +5,9 @@ import exceptions.AggregatedException
 import javax.inject.{Inject, Singleton}
 import models.Product
 import org.joda.time.DateTime
+import scalaz.OptionT
 import utils.ScalaUtils.{flatten, predicate}
+import utils.TypeAliases.TagName
 import web.requests.CreateProductRequest
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -33,6 +35,13 @@ class ProductService @Inject()(productDao: ProductDao, tagService: TagService)
       product <- productDao.insert(toProduct(createProductRequest))
     }
     yield product
+
+
+  def getById(id: String)(implicit executionContext: ExecutionContext): OptionT[Future, Product] =
+    productDao.getById(id)
+
+  def getByTag(tagName: TagName)(implicit executionContext: ExecutionContext): Future[List[Product]] =
+    productDao.getByTag(tagName)
 }
 
 object ProductService
@@ -40,6 +49,6 @@ object ProductService
   def toProduct: PartialFunction[CreateProductRequest, Product] =
   {
     case CreateProductRequest(id, name, label, description, tags, imageUrls) =>
-      Product(id, DateTime.now(), name, label.getOrElse(name), description, flatten(tags), flatten(imageUrls))
+      Product(id, DateTime.now(), name, label.getOrElse(name), description, flatten(tags).toSet, flatten(imageUrls).toSet)
   }
 }
