@@ -29,7 +29,7 @@ object JsonMatchers
 
   def equalErrorMessage(exception: Exception): Matcher[JsValue] =
   {
-    case ErrorResponse(errorMessage) =>
+    case ErrorResponse(errorMessage :: _) =>
       MatchResult(
         errorMessage == exception.getMessage,
         s"$errorMessage != ${exception.getMessage}",

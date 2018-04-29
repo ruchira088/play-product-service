@@ -1,4 +1,4 @@
 GET     /info                       web.controllers.HomeController.info
 
 POST    /tags                       web.controllers.TagController.create
-GET     /tags/:name                 web.controllers.TagController.findByName(name)
+GET     /tags/:name                 web.controllers.TagController.getByName(name)

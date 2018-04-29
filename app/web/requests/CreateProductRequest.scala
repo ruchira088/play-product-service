@@ -14,5 +14,5 @@ case class CreateProductRequest(
 
 object CreateProductRequest
 {
-  implicit def oFormat: OFormat[CreateTagRequest] = Json.format[CreateTagRequest]
+  implicit def oFormat: OFormat[CreateProductRequest] = Json.format[CreateProductRequest]
 }

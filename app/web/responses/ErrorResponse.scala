@@ -1,24 +1,25 @@
 package web.responses
 
-import play.api.libs.json.{JsObject, JsValue, Json, Writes}
+import play.api.libs.json._
 
-case class ErrorResponse(exception: Exception)
+case class ErrorResponse(throwables: List[Throwable])
 
 object ErrorResponse
 {
-  val EXCEPTION_JSON_FIELD = "errorMessage"
+  val EXCEPTION_JSON_FIELD = "errorMessages"
 
-  def unapply(jsValue: JsValue): Option[String] =
+  def unapply(jsValue: JsValue): Option[List[String]] =
     for {
       jsObject <- jsValue.asOpt[JsObject]
 
-      errorMessage <- (jsObject \ EXCEPTION_JSON_FIELD).asOpt[String]
+      errorMessages <- (jsObject \ EXCEPTION_JSON_FIELD).asOpt[List[String]]
     }
-    yield errorMessage
+    yield errorMessages
 
   implicit def errorWrite: Writes[ErrorResponse] =
   {
-    case ErrorResponse(exception) => Json.obj(EXCEPTION_JSON_FIELD -> exception.getMessage)
+    case ErrorResponse(throwables) =>
+      Json.obj(EXCEPTION_JSON_FIELD -> JsArray { throwables.map(throwable => JsString(throwable.getMessage)) })
   }
 
 }

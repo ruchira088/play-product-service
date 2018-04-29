@@ -2,16 +2,17 @@ package services
 
 import daos.ProductDao
 import exceptions.AggregatedException
+import exceptions.EmptyResultException.noProductsWithId
 import javax.inject.{Inject, Singleton}
 import models.Product
 import org.joda.time.DateTime
-import scalaz.OptionT
 import utils.ScalaUtils.{flatten, predicate}
 import utils.TypeAliases.TagName
 import web.requests.CreateProductRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
+import scalaz.std.scalaFuture.futureInstance
 
 @Singleton
 class ProductService @Inject()(productDao: ProductDao, tagService: TagService)
@@ -37,8 +38,8 @@ class ProductService @Inject()(productDao: ProductDao, tagService: TagService)
     yield product
 
 
-  def getById(id: String)(implicit executionContext: ExecutionContext): OptionT[Future, Product] =
-    productDao.getById(id)
+  def getById(productId: String)(implicit executionContext: ExecutionContext): Future[Product] =
+    productDao.getById(productId).getOrElseF(Future.failed(noProductsWithId(productId)))
 
   def getByTag(tagName: TagName)(implicit executionContext: ExecutionContext): Future[List[Product]] =
     productDao.getByTag(tagName)

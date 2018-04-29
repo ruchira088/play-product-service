@@ -2,6 +2,7 @@ package utils
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
+import scala.language.implicitConversions
 
 object ScalaUtils
 {
@@ -12,4 +13,6 @@ object ScalaUtils
     if (condition) Future.successful((): Unit) else Future.failed(exception)
 
   def flatten[A](option: Option[List[A]]): List[A] = option.toList.flatten
+
+  implicit def toList[A](item: A): List[A] = List(item)
 }

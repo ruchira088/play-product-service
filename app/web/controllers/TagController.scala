@@ -29,7 +29,7 @@ class TagController @Inject()(
     }
   }
 
-  def findByName(name: String): Action[AnyContent] =
+  def getByName(name: String): Action[AnyContent] =
     Action.async {
       handleExceptions {
         for {

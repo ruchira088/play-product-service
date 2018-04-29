@@ -1,6 +1,6 @@
 package web.utils
 
-import models.{ProductTag, ServiceInformation}
+import models.{Product, ProductTag, ServiceInformation}
 import org.joda.time.DateTime
 import play.api.libs.json._
 
@@ -8,7 +8,7 @@ import scala.util.Try
 
 object JsonUtils
 {
-  implicit def jodaTimeJsonFormat = new Format[DateTime]
+  implicit def jodaTimeJsonFormat: Format[DateTime] = new Format[DateTime]
   {
     override def reads(json: JsValue): JsResult[DateTime] =
       json match {
@@ -24,5 +24,7 @@ object JsonUtils
   implicit def serviceInfoJsonFormat: OFormat[ServiceInformation] = Json.format[ServiceInformation]
 
   implicit def productTagJsonFormat: OFormat[ProductTag] = Json.format[ProductTag]
+
+  implicit def productJsonFormat: OFormat[Product] = Json.format[Product]
 
 }
