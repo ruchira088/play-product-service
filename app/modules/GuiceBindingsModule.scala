@@ -38,7 +38,7 @@ class GuiceBindingsModule extends AbstractModule
   private def bindCassandraDao()(implicit environmentVariables: EnvironmentVariables) =
   {
     bind(classOf[CassandraConnection]).toInstance(cassandraConnection().get)
-    bind(classOf[TagDao]).to(classOf[PhantomTagDao])
+    bind(classOf[TagDao]).to(classOf[PhantomTagDao]).asEagerSingleton()
   }
 }
 

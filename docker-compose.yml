@@ -17,9 +17,11 @@ services:
       - "/opt/product-service/project/target"
       - "/root/.sbt/1.0/plugins"
     environment:
+      DAO_TYPE: "CASSANDRA"
       POSTGRES_USER: "product_service"
       POSTGRES_PASSWORD: "my-secret-password"
       POSTGRES_URL: "jdbc:postgresql://postgres-database:5432/product_service"
+      CASSANDRA_HOSTS: "cassandra-database"
 
   postgres-database:
     image: postgres
@@ -29,3 +31,6 @@ services:
       POSTGRES_USER: "product_service"
       POSTGRES_PASSWORD: "my-secret-password"
       POSTGRES_DB: "product_service"
+
+  cassandra-database:
+    image: cassandra

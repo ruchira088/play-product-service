@@ -12,11 +12,11 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 @Singleton
-class ProductService @Inject()(productDao: ProductDao, tagService: TagService)(implicit executionContext: ExecutionContext)
+class ProductService @Inject()(productDao: ProductDao, tagService: TagService)
 {
   import ProductService.toProduct
 
-  def create(createProductRequest: CreateProductRequest): Future[Product] =
+  def create(createProductRequest: CreateProductRequest)(implicit executionContext: ExecutionContext): Future[Product] =
     for {
       tagsLookup <- Future.sequence {
         flatten(createProductRequest.tags)

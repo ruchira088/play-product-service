@@ -12,7 +12,7 @@ buildInfoPackage := "com.eed3si9n.ruchij"
 
 scalaVersion := "2.12.5"
 
-libraryDependencies ++= Seq(
+libraryDependencies ++= List(
   guice,
   playSlick, playSlickEvolutions, postgresql,
   phantomDsl,
@@ -24,6 +24,8 @@ libraryDependencies ++= Seq(
 )
 
 javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
+
+scalacOptions ++= List("-feature")
 
 coverageEnabled := true
 

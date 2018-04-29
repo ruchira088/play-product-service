@@ -1,10 +1,11 @@
 package utils
 
 import exceptions.EnvValueUndefinedException
+import constants.DefaultConfigs
+import ScalaUtils.toTry
 
 import scala.util.Try
-import ScalaUtils.toTry
-import constants.DefaultConfigs
+import scala.language.implicitConversions
 
 object ConfigUtils
 {
@@ -24,4 +25,11 @@ object ConfigUtils
       envValue <- getEnvValue(name)
     }
     yield envValue.split(DefaultConfigs.ENV_VALUE_DELIMITER).toList
+
+  def terminate(throwable: Throwable): Unit =
+  {
+    System.err.println(throwable.getMessage)
+    throwable.printStackTrace()
+    sys.exit(1)
+  }
 }

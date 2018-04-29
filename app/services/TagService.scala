@@ -1,5 +1,7 @@
 package services
 
+import java.util.concurrent.Executors
+
 import daos.TagDao
 import exceptions.DuplicateItemException
 import exceptions.EmptyResultException._
@@ -13,11 +15,11 @@ import web.requests.CreateTagRequest
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TagService @Inject()(tagDao: TagDao)(implicit executionContext: ExecutionContext)
+class TagService @Inject()(tagDao: TagDao)
 {
   import TagService._
 
-  def newTag(createTagRequest: CreateTagRequest): Future[ProductTag] =
+  def newTag(createTagRequest: CreateTagRequest)(implicit executionContext: ExecutionContext): Future[ProductTag] =
     for {
       isEmpty <- tagDao.findByName(createTagRequest.name).isEmpty
 
@@ -26,7 +28,7 @@ class TagService @Inject()(tagDao: TagDao)(implicit executionContext: ExecutionC
     }
     yield productTag
 
-  def getByName(tagName: String): Future[ProductTag] =
+  def getByName(tagName: String)(implicit executionContext: ExecutionContext): Future[ProductTag] =
     for {
       productTag <-
         tagDao.findByName(tagName)
