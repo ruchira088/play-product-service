@@ -12,7 +12,7 @@ abstract class PhantomProductTagTable extends Table[PhantomProductTagTable, Prod
 
   object name extends StringColumn with PartitionKey
 
-  object label extends OptionalStringColumn
+  object label extends StringColumn
 
   object description extends OptionalStringColumn
 }

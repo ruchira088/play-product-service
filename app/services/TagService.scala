@@ -43,6 +43,6 @@ object TagService
 {
   def toProductTag(createTagRequest: CreateTagRequest): ProductTag =
     ProductTag(
-      uuid(), DateTime.now(), createTagRequest.name, createTagRequest.label, createTagRequest.description
+      uuid(), DateTime.now(), createTagRequest.name, createTagRequest.label.getOrElse(createTagRequest.name), createTagRequest.description
     )
 }

@@ -6,6 +6,6 @@ case class ProductTag(
       id: String,
       createdAt: DateTime,
       name: String,
-      label: Option[String],
+      label: String,
       description: Option[String]
 )

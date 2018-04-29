@@ -35,8 +35,7 @@ class PhantomTagDao @Inject()(connector: CassandraConnection, applicationLifecyc
       yield results.headOption
     }
 
-  def init(): Future[Seq[ResultSet]] =
-    productTags.create.ifNotExists().future()
+  def init(): Future[Seq[ResultSet]] = productTags.create.ifNotExists().future()
 
   init().onComplete {
 
