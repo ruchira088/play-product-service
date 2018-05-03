@@ -22,7 +22,7 @@ services:
       POSTGRES_USER: "product_service"
       POSTGRES_PASSWORD: "my-secret-password"
       POSTGRES_URL: "jdbc:postgresql://postgres-database:5432/product_service"
-      CASSANDRA_HOSTS: "cassandra-database"
+#      CASSANDRA_HOSTS: "cassandra-database"
 
   postgres-database:
     image: postgres
