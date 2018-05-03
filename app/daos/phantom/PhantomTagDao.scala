@@ -37,7 +37,5 @@ class PhantomTagDao @Inject()(connector: CassandraConnection, applicationLifecyc
 
   override def init(): Future[Seq[ResultSet]] = productTags.create.ifNotExists().future()
 
-  override def onShutdown(): Unit = shutdown()
-
   PhantomDao.initialize(self, applicationLifecycle)
 }

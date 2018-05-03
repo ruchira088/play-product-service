@@ -9,6 +9,7 @@ services:
       - 5005:5005
     depends_on:
       - postgres-database
+      - cassandra-database
     volumes:
       - "~/.sbt:/root/.sbt"
       - "~/.ivy2:/root/.ivy2"

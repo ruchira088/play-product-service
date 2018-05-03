@@ -10,14 +10,16 @@ import scala.util.{Failure, Success}
 
 trait PhantomDao
 {
+  self: Database[_] =>
+
   def init(): Future[Seq[ResultSet]]
 
-  def onShutdown(): Unit
+  def onShutdown(): Unit = shutdown()
 }
 
 object PhantomDao
 {
-  def initialize[T <: PhantomDao](phantomDao: PhantomDao, applicationLifecycle: ApplicationLifecycle)
+  def initialize[T <: PhantomDao](phantomDao: T, applicationLifecycle: ApplicationLifecycle)
                                   (implicit classTag: ClassTag[T], executionContext: ExecutionContext): Unit =
     phantomDao.init().onComplete {
       case Success(_) => {

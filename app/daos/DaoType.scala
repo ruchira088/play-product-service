@@ -4,20 +4,14 @@ import scala.util.{Success, Try}
 
 trait DaoType
 {
-  val envValue: String
+  val envValue: String = getClass.getSimpleName.init.toUpperCase
 }
 
 object DaoType
 {
   case object Slick extends DaoType
-  {
-    override val envValue: String = "SLICK"
-  }
 
   case object Cassandra extends DaoType
-  {
-    override val envValue: String = "CASSANDRA"
-  }
 
   def unapply(envValue: Try[String]): Option[DaoType] =
     envValue match {

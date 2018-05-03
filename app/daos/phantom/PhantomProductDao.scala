@@ -11,7 +11,7 @@ import models.Product
 import play.api.inject.ApplicationLifecycle
 import scalaz.OptionT
 import shapeless.HList
-import utils.TypeAliases.{TagId, TagName}
+import utils.TypeAliases.TagName
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -45,8 +45,6 @@ class PhantomProductDao @Inject()(connection: CassandraConnection, applicationLi
     products.select.where(query).fetch()
 
   override def init(): Future[Seq[ResultSet]] = products.create.ifNotExists().future()
-
-  override def onShutdown(): Unit = shutdown()
 
   PhantomDao.initialize(self, applicationLifecycle)
 }
