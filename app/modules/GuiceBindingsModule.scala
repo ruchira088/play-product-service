@@ -10,7 +10,6 @@ import daos.{DaoType, ProductDao, TagDao}
 import utils.ConfigUtils._
 
 import scala.util.Try
-import scala.util.control.NonFatal
 
 class GuiceBindingsModule extends AbstractModule
 {
@@ -18,7 +17,7 @@ class GuiceBindingsModule extends AbstractModule
 
   override def configure(): Unit =
     bindings().recover {
-      case NonFatal(throwable) => terminate(throwable)
+      case throwable => terminate(throwable)
     }
 
   private def bindings(): Try[Unit] =
